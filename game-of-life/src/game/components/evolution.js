@@ -3,6 +3,10 @@ import { useEffect } from "react";
 const rows = 40;
 const cols = 40;
 
+let started=false;// Set to true when use clicks start
+let timer;//To control evolutions
+let evolutionSpeed=1000;// One second between generations
+
 //Need 2D arrays. These are 1D
 let currGen = [rows];
 let nextGen = [rows];
@@ -10,30 +14,30 @@ let nextGen = [rows];
 
 
 //Creates two-dimensional arrrays
-function createGenArrays (){
+function createGenArrays (row=rows,col=cols){
     
-    for (let i = 0; i < rows; i++){
-        currGen[i] = [cols];
-        nextGen[i] = [cols];
+    for (let i = 0; i < row; i++){
+        currGen[i] = [col];
+        nextGen[i] = [col];
     }
 }
 //Sets the array values to 0 (dead)
-function initGenArrays() {
-    for (let i = 0; i <rows; i++) {
-        for (let j = 0; j < cols; j++){
+function initGenArrays(row=rows,col=cols) {
+    for (let i = 0; i <row; i++) {
+        for (let j = 0; j < col; j++){
             currGen[i][j] = 0;
             nextGen[i][j] = 0;
         }
 
     }
 }
-function createWorld() {
+function createWorld(row=rows,col=cols) {
     let world = document.querySelector('#world');
     let tbl = document.createElement('table');
     tbl.setAttribute('id','worldgrid');
-for (let i = 0; i < rows; i++) {
+for (let i = 0; i < row; i++) {
         let tr = document.createElement('tr');
-        for (let j = 0; j < cols; j++) {
+        for (let j = 0; j < col; j++) {
             let cell = document.createElement('td');
             /*An id attribute needs to be added to each cell so we can keep track of them. We will use i and j in the form i_j. So the upper left corner would be 0_0, etc.*/
             cell.setAttribute('id', i + '__' + j);
@@ -53,16 +57,18 @@ function cellClick() {
     let col = Number(loc[2]);//Get j
     console.log(this);
 // Toggle cell alive or dead
-    if (this.className=== 'alive'){
+    if(started == false){
+        if (this.className=== 'alive'){
         this.setAttribute('class', 'dead');
         currGen[row][col]= 0;           
-    }else{
-        this.setAttribute('class', 'alive');
-        currGen[row][col]= 1;
+        }else{
+            this.setAttribute('class', 'alive');
+            currGen[row][col]= 1;
+        }
     }
+
 }
 
-console.log(currGen);
 function getNeighborCount(row, col){
     let count = 0
     let nrow = Number(row);
@@ -124,9 +130,9 @@ function getNeighborCount(row, col){
     
 }
 
-function createNextGen() {
-    for (let i = 0; i < rows; i++) {
-        for (let j = 0; j < cols; j++) {
+function createNextGen(row,col) {
+    for (let i = 0; i < row; i++) {
+        for (let j = 0; j < col; j++) {
                                     
             let neighbors = getNeighborCount(i, j);
          
@@ -157,29 +163,26 @@ function createNextGen() {
 
 
 
-function updateCurrGen() {
+function updateCurrGen(row,col) {
     
-    for (let i = 0; i < rows; i++) {
-        let row = i;
-        for (let j = 0; j < cols; j++) {
-            let col = j;
+    for (let i = 0; i < row; i++) {
+        for (let j = 0; j < col; j++) {
             // Update the current generation with
             // the results of createNextGen function
-            currGen[row][col] = nextGen[row][col];
+            currGen[i][j] = nextGen[i][j];
             // Set nextGen back to empty
-            nextGen[row][col] = 0;
+            nextGen[i][j] = 0;
         }
     }
     
 }
-function updateWorld() {
+function updateWorld(row,col) {
+        console.log(row,col);
         let cell='';
-        for (let i = 0; i < rows; i++) {
-            let row = i;
-            for (let j = 0; j < cols; j++) {
-                let col = j;
-                cell = document.getElementById(`${row}__${col}`);
-                if (currGen[row][col] === 0) {
+        for (let i = 0; i < row; i++) {
+            for (let j = 0; j < col; j++) {
+                cell = document.getElementById(`${i}__${j}`);
+                if (currGen[i][j] === 0) {
                     cell.setAttribute('class', 'dead');
                 } else {
                     cell.setAttribute('class', 'alive');
@@ -187,27 +190,25 @@ function updateWorld() {
             }
         }
     }
-function evolve(){
-    createNextGen();//Apply the rules
-    updateCurrGen();//Set Current values from new generation
-    updateWorld();//Update the world view
-
+function evolve(row=rows,col=cols){
+    console.log(row,col);
+    createNextGen(row,col);//Apply the rules
+    updateCurrGen(row,col);//Set Current values from new generation
+    updateWorld(row,col);//Update the world view
+    let evo = document.querySelector('#evo_speed')
     if (started) {
-        timer = setTimeout(evolve,evolutionSpeed);
+        timer = setTimeout(evolve,evo.value || evolutionSpeed,row,col);
     }
 }
 
-    let started=false;// Set to true when use clicks start
-    let timer;//To control evolutions
-    let evolutionSpeed=1000;// One second between generations
 
-function startStop(){
+
+function startStop(row,col){
     let startstop = document.querySelector('#btnstartstop');
-
     if(!started){
         started = true;
-        startStop.value = 'Stop Reproducing';
-        evolve();
+        startstop.value = 'Stop Reproducing';
+        evolve(row,col);
     }
     else{
         started=false;

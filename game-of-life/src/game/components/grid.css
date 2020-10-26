@@ -1,6 +1,8 @@
 #world {
     padding-bottom: 10px;
+    align-self: flex-start;
 }
+
 table {
     background-color: whitesmoke;
 }
@@ -15,4 +17,46 @@ td.dead {
 }
 td.alive {
     background-color:blue;
+}
+
+.container{
+    display:flex;
+    flex-direction: column;
+}
+
+
+.grid-container{
+    display:flex;
+    flex-direction: column ;
+}
+
+.world-container{
+    display: flex;
+    justify-content: space-around;
+}
+
+
+.button-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+
+}
+
+.button-container button{
+    border-radius: 10px;
+    height: 10%;
+    box-shadow: 5px 5px 5px #393b44;
+    background-color: #d6e0f0;
+}
+
+.inputs{
+    display: flex;
+    justify-content: space-around;
+    padding-top: 5%;
+    height: 50px;    
+}
+.inputs input{
+    background-color: #d6e0f0;
 }
