@@ -4,6 +4,7 @@ import {resetWorld,initGenArrays,createGenArrays,createWorld, evolve, startStop}
 export const Grid = props =>{
     let row = "";
     let col = "";
+
     
     function onClick(){
         var reset = document.getElementById('worldgrid');
@@ -17,7 +18,6 @@ export const Grid = props =>{
     }
 
     function evolution(){
-        console.log(row,col);
         evolve(row,col);
    
     }
@@ -33,6 +33,7 @@ export const Grid = props =>{
 
     return(
         <div className='grid'>
+            
             <div className='world-container'>
             <div id ='world'/>
             <div className = 'button-container'>

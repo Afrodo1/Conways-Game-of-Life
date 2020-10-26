@@ -190,6 +190,8 @@ function updateWorld(row,col) {
             }
         }
     }
+
+
 function evolve(row=rows,col=cols){
     console.log(row,col);
     createNextGen(row,col);//Apply the rules
@@ -199,6 +201,7 @@ function evolve(row=rows,col=cols){
     if (started) {
         timer = setTimeout(evolve,evo.value || evolutionSpeed,row,col);
     }
+    
 }
 
 
