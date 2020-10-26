@@ -5,6 +5,8 @@ export const Grid = props =>{
     let row = "";
     let col = "";
 
+
+
     
     function onClick(){
         var reset = document.getElementById('worldgrid');
