@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 
 const rows = 40;
 const cols = 40;
+
 
 let started=false;// Set to true when use clicks start
 let timer;//To control evolutions
@@ -192,26 +193,31 @@ function updateWorld(row,col) {
     }
 
 
-function evolve(row=rows,col=cols){
+
+function evolve(row=rows,col=cols,count, setCount){
     console.log(row,col);
+    setCount(count += 1);
     createNextGen(row,col);//Apply the rules
     updateCurrGen(row,col);//Set Current values from new generation
     updateWorld(row,col);//Update the world view
     let evo = document.querySelector('#evo_speed')
-    if (started) {
-        timer = setTimeout(evolve,evo.value || evolutionSpeed,row,col);
+    if (started) {       
+        
+        timer = setTimeout(evolve,evo.value || evolutionSpeed,row,col,count,setCount);
+        
     }
     
 }
 
 
 
-function startStop(row,col){
+function startStop(row,col, count, setCount){
+    console.log(count);
     let startstop = document.querySelector('#btnstartstop');
     if(!started){
         started = true;
         startstop.value = 'Stop Reproducing';
-        evolve(row,col);
+        evolve(row,col, count, setCount);
     }
     else{
         started=false;
@@ -220,7 +226,8 @@ function startStop(row,col){
     }
 }
 
-function resetWorld(){
+function resetWorld(count,setCount){
+    setCount(0)
     window.location.reload();
 }
 

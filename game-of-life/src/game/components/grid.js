@@ -1,9 +1,10 @@
-import React, {useEffect} from 'react'
+import React, {useEffect,useState} from 'react'
 import './grid.css'
 import {resetWorld,initGenArrays,createGenArrays,createWorld, evolve, startStop} from './evolution'
 export const Grid = props =>{
-    let row = "";
-    let col = "";
+    let row = 40;
+    let col = 40;
+
 
 
 
@@ -19,10 +20,6 @@ export const Grid = props =>{
         
     }
 
-    function evolution(){
-        evolve(row,col);
-   
-    }
 
 
     window.onload=()=>{        
@@ -39,13 +36,9 @@ export const Grid = props =>{
             <div className='world-container'>
             <div id ='world'/>
             <div className = 'button-container'>
-                <button type='button' id = 'btnstartstop' value='Start Reproducing' onClick={
-                    function swich(){
-                        startStop(row,col);
-                    }
-                }>Evolve</button>
-                <button type='button' id='btnreset' value='Reset World' onClick={resetWorld}>Reset World</button>
-                <button type='button' id='snglevo' value ='Single Evolution' onClick={evolution}>Single Evolution</button>
+                <button type='button' id = 'btnstartstop' value='Start Reproducing' onClick={()=>startStop(row,col,props.count, props.setCount)}>Evolve</button>
+                <button type='button' id='btnreset' value='Reset World' onClick={()=>resetWorld(props.count,props.setCount)}>Reset World</button>
+                <button type='button' id='snglevo' value ='Single Evolution' onClick={()=>evolve(row,col,props.count,props.setCount)}>Single Evolution</button>
                 <button onClick={onClick}>Create New World</button>
             </div>                
             </div>

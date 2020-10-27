@@ -1,15 +1,18 @@
-import React from 'react'
+import React,{useState} from 'react'
 import { Grid } from './components/grid'
 import './game.css'
 
 
 const Game = props => {
 
+    const [count, setCount] = useState(0)
+
 
         return(
             <div className = 'container'>
                 <div className = 'grid-container'>
-                    <Grid/>                   
+                    <h3>Generation {count}</h3>
+                    <Grid count = {count} setCount = {setCount}/>                   
                 </div>
                 <div className='rules-container'>
                     <h3>
